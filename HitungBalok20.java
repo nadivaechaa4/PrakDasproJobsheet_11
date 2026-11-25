@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class HitungBalok20 {
 
     static int hitungLuas(int pjg, int lb) {
@@ -13,23 +15,27 @@ public class HitungBalok20 {
     }
 
     public static void main(String[] args) {
-        int[][] ukuranBalok = {
-            {4, 3, 5},
-            {6, 4, 2},
-            {5, 5, 5}
-        };
+        Scanner input = new Scanner(System.in);
 
-        for (int i = 0; i < ukuranBalok.length; i++) {
-            int p = ukuranBalok[i][0];
-            int l = ukuranBalok[i][1];
-            int t = ukuranBalok[i][2];
+        for (int i = 1; i <= 3; i++) {
+            System.out.println("=== Balok ke-" + i + " ===");
+            System.out.print("Masukkan panjang : ");
+            int p = input.nextInt();
 
-            int lp = hitungLuasPermukaanBalok(p, l, t);
-            int vol = hitungVolume(t, p, l);
+            System.out.print("Masukkan lebar   : ");
+            int l = input.nextInt();
 
-            System.out.println("Balok ke-" + (i + 1) + " (" + p + "x" + l + "x" + t + ")");
-            System.out.println("  Luas Permukaan : " + lp);
-            System.out.println("  Volume         : " + vol);
+            System.out.print("Masukkan tinggi  : ");
+            int t = input.nextInt();
+
+            int luasPermukaan = hitungLuasPermukaanBalok(p, l, t);
+            int volume = hitungVolume(t, p, l);
+
+            System.out.println("Luas Permukaan Balok ke-" + i + " : " + luasPermukaan);
+            System.out.println("Volume Balok ke-" + i + "         : " + volume);
+            System.out.println();
         }
+
+        input.close();
     }
 }
