@@ -2,29 +2,29 @@ import java.util.Scanner;
 
 public class RekapLaundry20 {
 
-    public static void inputData(int[][] data, String[] layanan, String[] hari, Scanner sc) {
+    public static void inputData(int[][] data, String[] layanan, int jmlHari, Scanner sc) {
         for (int i = 0; i < layanan.length; i++) {
             System.out.println("\nInput berat cucian (kg) untuk layanan: " + layanan[i]);
-            for (int j = 0; j < hari.length; j++) {
-                System.out.print("  " + hari[j] + ": ");
+            for (int j = 0; j < jmlHari; j++) {
+                System.out.print("  Hari ke-" + (j + 1) + ": ");
                 data[i][j] = sc.nextInt();
             }
         }
     }
 
-    public static void tampilTabel(int[][] data, String[] layanan, int[] harga, String[] hari) {
+    public static void tampilTabel(int[][] data, String[] layanan, int[] harga, int jmlHari) {
         System.out.println("\n==================== REKAP BERAT CUCIAN (KG) ====================");
         System.out.printf("%-15s | %-10s", "Layanan", "Harga/kg");
-        for (String h : hari) {
-            System.out.printf(" | %-6s", h);
+        for (int j = 0; j < jmlHari; j++) {
+            System.out.printf(" | %-9s", "Hari ke-" + (j + 1));
         }
         System.out.println();
         System.out.println("-----------------------------------------------------------------");
 
         for (int i = 0; i < layanan.length; i++) {
             System.out.printf("%-15s | Rp%-8d", layanan[i], harga[i]);
-            for (int j = 0; j < hari.length; j++) {
-                System.out.printf(" | %-6d", data[i][j]);
+            for (int j = 0; j < jmlHari; j++) {
+                System.out.printf(" | %-9d", data[i][j]);
             }
             System.out.println();
         }
@@ -70,8 +70,8 @@ public class RekapLaundry20 {
         return idxHariMax;
     }
 
-    public static void hitungDanTampilPendapatan(int[][] data, String[] layanan, int[] harga) {
-        System.out.println("\n=== PENDAPATAN PER LAYANAN (6 HARI) ===");
+    public static void hitungDanTampilPendapatan(int[][] data, String[] layanan, int[] harga, int jmlHari) {
+        System.out.println("\n=== PENDAPATAN PER LAYANAN (" + jmlHari + " HARI) ===");
         int totalSemuaPendapatan = 0;
 
         for (int i = 0; i < layanan.length; i++) {
@@ -86,14 +86,27 @@ public class RekapLaundry20 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        String[] layanan = {"Cuci Kering", "Cuci Setrika", "Setrika Saja", "Express"};
-        int[] harga = {6000, 8000, 5000, 12000};
-        String[] hari = {"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"};
-        int[][] dataCucian = new int[layanan.length][hari.length];
+        System.out.print("Masukkan jumlah layanan: ");
+        int jmlLayanan = sc.nextInt();
+        System.out.print("Masukkan jumlah hari: ");
+        int jmlHari = sc.nextInt();
+        sc.nextLine();
 
-        inputData(dataCucian, layanan, hari, sc);
+        String[] layanan = new String[jmlLayanan];
+        int[] harga = new int[jmlLayanan];
+        int[][] dataCucian = new int[jmlLayanan][jmlHari];
 
-        tampilTabel(dataCucian, layanan, harga, hari);
+        for (int i = 0; i < jmlLayanan; i++) {
+            System.out.println("\nData Layanan ke-" + (i + 1));
+            System.out.print("  Nama layanan : ");
+            layanan[i] = sc.nextLine();
+            System.out.print("  Harga per kg : ");
+            harga[i] = sc.nextInt();
+            sc.nextLine(); 
+        }
+
+        inputData(dataCucian, layanan, jmlHari, sc);
+        tampilTabel(dataCucian, layanan, harga, jmlHari);
 
         System.out.println("\n=== TOTAL BERAT PER LAYANAN ===");
         for (int i = 0; i < layanan.length; i++) {
@@ -102,9 +115,9 @@ public class RekapLaundry20 {
 
         tampilLayananTertinggi(dataCucian, layanan);
         int idxSibuk = hariTersibuk(dataCucian);
-        System.out.println("Hari tersibuk: " + hari[idxSibuk]);
+        System.out.println("Hari tersibuk: Hari ke-" + (idxSibuk + 1));
 
-        hitungDanTampilPendapatan(dataCucian, layanan, harga);
+        hitungDanTampilPendapatan(dataCucian, layanan, harga, jmlHari);
 
         sc.close();
     }
